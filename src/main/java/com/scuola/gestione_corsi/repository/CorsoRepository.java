@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Repository per l'entità Corso.
@@ -41,4 +42,7 @@ public interface CorsoRepository extends JpaRepository<Corso, Long> {
     List<Corso> findByPrezzoBetween(Double prezzoMin, Double prezzoMax);
 
     List<Corso> findByDocenti_Id(Long docenteId);
+
+    boolean existsByNome(String nome);
+    Optional<Corso> findByNome(String nome);
 } 

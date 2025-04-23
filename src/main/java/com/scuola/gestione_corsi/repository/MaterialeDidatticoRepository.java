@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Repository per l'entità MaterialeDidattico.
@@ -33,4 +34,7 @@ public interface MaterialeDidatticoRepository extends JpaRepository<MaterialeDid
      * @return Lista di materiali didattici che contengono la parola nel titolo
      */
     List<MaterialeDidattico> findByTitoloContaining(String titolo);
+
+    boolean existsByTitolo(String titolo);
+    Optional<MaterialeDidattico> findByTitolo(String titolo);
 } 

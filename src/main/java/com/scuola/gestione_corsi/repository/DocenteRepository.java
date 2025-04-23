@@ -1,10 +1,12 @@
 package com.scuola.gestione_corsi.repository;
 
 import com.scuola.gestione_corsi.model.Docente;
+import com.scuola.gestione_corsi.model.Utente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Repository per l'entità Docente.
@@ -32,4 +34,18 @@ public interface DocenteRepository extends JpaRepository<Docente, Long> {
      * @return Lista di docenti con la specializzazione specificata
      */
     List<Docente> findBySpecializzazione(String specializzazione);
+
+    /**
+     * Verifica se esiste un docente associato a un utente.
+     * @param utente L'utente da cercare
+     * @return true se esiste un docente associato all'utente, false altrimenti
+     */
+    boolean existsByUtente(Utente utente);
+
+    /**
+     * Trova un docente associato a un utente.
+     * @param utente L'utente da cercare
+     * @return Il docente associato all'utente, se esiste
+     */
+    Optional<Docente> findByUtente(Utente utente);
 } 

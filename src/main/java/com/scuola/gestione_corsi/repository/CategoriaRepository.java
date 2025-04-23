@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Repository per l'entità Categoria.
@@ -24,5 +25,12 @@ public interface CategoriaRepository extends JpaRepository<Categoria, Long> {
      * @param nome Il nome della categoria
      * @return La categoria se trovata
      */
-    Categoria findByNome(String nome);
+    Optional<Categoria> findByNome(String nome);
+
+    /**
+     * Verifica se esiste una categoria con il nome specificato.
+     * @param nome Il nome della categoria da verificare
+     * @return true se la categoria esiste, false altrimenti
+     */
+    boolean existsByNome(String nome);
 } 

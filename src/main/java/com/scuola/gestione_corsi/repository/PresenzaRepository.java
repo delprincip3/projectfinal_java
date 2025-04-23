@@ -1,11 +1,14 @@
 package com.scuola.gestione_corsi.repository;
 
+import com.scuola.gestione_corsi.model.Iscrizione;
+import com.scuola.gestione_corsi.model.Lezione;
 import com.scuola.gestione_corsi.model.Presenza;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Repository per l'entità Presenza.
@@ -42,4 +45,7 @@ public interface PresenzaRepository extends JpaRepository<Presenza, Long> {
      * @return Lista di presenze con lo stato specificato
      */
     List<Presenza> findByPresente(Boolean presente);
+
+    boolean existsByIscrizioneAndLezione(Iscrizione iscrizione, Lezione lezione);
+    Optional<Presenza> findByIscrizioneAndLezione(Iscrizione iscrizione, Lezione lezione);
 } 

@@ -2,10 +2,13 @@ package com.scuola.gestione_corsi.repository;
 
 import com.scuola.gestione_corsi.model.Iscrizione;
 import com.scuola.gestione_corsi.model.StatoIscrizione;
+import com.scuola.gestione_corsi.model.Studente;
+import com.scuola.gestione_corsi.model.Corso;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Repository per l'entità Iscrizione.
@@ -42,4 +45,7 @@ public interface IscrizioneRepository extends JpaRepository<Iscrizione, Long> {
      * @return Lista di iscrizioni dello studente al corso
      */
     List<Iscrizione> findByStudente_IdAndCorso_Id(Long studenteId, Long corsoId);
+
+    boolean existsByStudenteAndCorso(Studente studente, Corso corso);
+    Optional<Iscrizione> findByStudenteAndCorso(Studente studente, Corso corso);
 } 

@@ -1,10 +1,12 @@
 package com.scuola.gestione_corsi.repository;
 
 import com.scuola.gestione_corsi.model.Studente;
+import com.scuola.gestione_corsi.model.Utente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Repository per l'entità Studente.
@@ -25,4 +27,18 @@ public interface StudenteRepository extends JpaRepository<Studente, Long> {
      * @return Lista di studenti iscritti al corso
      */
     List<Studente> findByIscrizioni_Corso_Id(Long corsoId);
+
+    /**
+     * Verifica se esiste uno studente associato a un utente.
+     * @param utente L'utente da cercare
+     * @return true se esiste uno studente associato all'utente, false altrimenti
+     */
+    boolean existsByUtente(Utente utente);
+
+    /**
+     * Trova uno studente associato a un utente.
+     * @param utente L'utente da cercare
+     * @return Lo studente associato all'utente, se esiste
+     */
+    Optional<Studente> findByUtente(Utente utente);
 } 

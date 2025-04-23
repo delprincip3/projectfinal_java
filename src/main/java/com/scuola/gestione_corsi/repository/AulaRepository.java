@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Repository per l'entità Aula.
@@ -31,5 +32,7 @@ public interface AulaRepository extends JpaRepository<Aula, Long> {
      * @param nome Il nome dell'aula
      * @return L'aula se trovata
      */
-    Aula findByNome(String nome);
+    Optional<Aula> findByNome(String nome);
+
+    boolean existsByNome(String nome);
 } 

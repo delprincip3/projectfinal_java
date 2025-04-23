@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Repository per l'entità Lezione.
@@ -42,4 +43,7 @@ public interface LezioneRepository extends JpaRepository<Lezione, Long> {
      * @return Lista di lezioni nell'intervallo specificato
      */
     List<Lezione> findByDataOraBetween(LocalDateTime dataInizio, LocalDateTime dataFine);
+
+    boolean existsByTitolo(String titolo);
+    Optional<Lezione> findByTitolo(String titolo);
 } 

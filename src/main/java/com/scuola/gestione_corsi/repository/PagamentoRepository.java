@@ -1,11 +1,13 @@
 package com.scuola.gestione_corsi.repository;
 
+import com.scuola.gestione_corsi.model.Iscrizione;
 import com.scuola.gestione_corsi.model.Pagamento;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Repository per l'entità Pagamento.
@@ -42,4 +44,7 @@ public interface PagamentoRepository extends JpaRepository<Pagamento, Long> {
      * @return Lista di pagamenti con importo superiore
      */
     List<Pagamento> findByImportoGreaterThan(Double importo);
+
+    boolean existsByIscrizione(Iscrizione iscrizione);
+    Optional<Pagamento> findByIscrizione(Iscrizione iscrizione);
 } 
