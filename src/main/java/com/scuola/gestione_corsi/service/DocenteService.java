@@ -1,11 +1,11 @@
 package com.scuola.gestione_corsi.service;
 
 import com.scuola.gestione_corsi.dto.DocenteDTO;
-import com.scuola.gestione_corsi.exception.ResourceNotFoundException;
-import com.scuola.gestione_corsi.mapper.DocenteMapper;
 import com.scuola.gestione_corsi.model.Docente;
+import com.scuola.gestione_corsi.model.Utente;
 import com.scuola.gestione_corsi.repository.DocenteRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.scuola.gestione_corsi.repository.UtenteRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,55 +13,74 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
+@RequiredArgsConstructor
 public class DocenteService {
 
-    @Autowired
-    private DocenteRepository docenteRepository;
-
-    @Autowired
-    private DocenteMapper docenteMapper;
+    private final DocenteRepository docenteRepository;
+    private final UtenteRepository utenteRepository;
 
     public List<DocenteDTO> findAll() {
-        return docenteRepository.findAll()
-                .stream()
-                .map(docenteMapper::toDTO)
+        return docenteRepository.findAll().stream()
+                .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }
 
     public DocenteDTO findById(Long id) {
         return docenteRepository.findById(id)
-                .map(docenteMapper::toDTO)
-                .orElseThrow(() -> new ResourceNotFoundException("Docente non trovato con id: " + id));
+                .map(this::convertToDTO)
+                .orElseThrow(() -> new RuntimeException("Docente non trovato"));
     }
 
-    public List<DocenteDTO> findBySpecializzazione(String specializzazione) {
-        return docenteRepository.findBySpecializzazione(specializzazione)
-                .stream()
-                .map(docenteMapper::toDTO)
-                .collect(Collectors.toList());
-    }
-
+    @Transactional
     public DocenteDTO create(DocenteDTO dto) {
-        Docente docente = docenteMapper.toEntity(dto);
-        Docente saved = docenteRepository.save(docente);
-        return docenteMapper.toDTO(saved);
+        Utente utente = utenteRepository.findByEmail(dto.getEmail())
+                .orElseThrow(() -> new RuntimeException("Utente non trovato"));
+
+        Docente docente = new Docente();
+        docente.setNome(dto.getNome());
+        docente.setCognome(dto.getCognome());
+        docente.setSpecializzazione(dto.getSpecializzazione());
+        docente.setCv(dto.getCv());
+        docente.setTariffa(dto.getTariffa());
+        docente.setUtente(utente);
+
+        return convertToDTO(docenteRepository.save(docente));
     }
 
+    @Transactional
     public DocenteDTO update(Long id, DocenteDTO dto) {
-        if (!docenteRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Docente non trovato con id: " + id);
-        }
-        dto.setId(id);
-        Docente docente = docenteMapper.toEntity(dto);
-        Docente updated = docenteRepository.save(docente);
-        return docenteMapper.toDTO(updated);
+        Docente docente = docenteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Docente non trovato"));
+
+        docente.setNome(dto.getNome());
+        docente.setCognome(dto.getCognome());
+        docente.setSpecializzazione(dto.getSpecializzazione());
+        docente.setCv(dto.getCv());
+        docente.setTariffa(dto.getTariffa());
+
+        return convertToDTO(docenteRepository.save(docente));
     }
 
     public void delete(Long id) {
-        if (!docenteRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Docente non trovato con id: " + id);
-        }
         docenteRepository.deleteById(id);
+    }
+
+    public List<DocenteDTO> findBySpecializzazione(String specializzazione) {
+        return docenteRepository.findBySpecializzazione(specializzazione).stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    private DocenteDTO convertToDTO(Docente docente) {
+        return DocenteDTO.builder()
+                .id(docente.getId())
+                .nome(docente.getNome())
+                .cognome(docente.getCognome())
+                .email(docente.getUtente().getEmail())
+                .specializzazione(docente.getSpecializzazione())
+                .cv(docente.getCv())
+                .tariffa(docente.getTariffa())
+                .utenteId(docente.getUtente().getId())
+                .build();
     }
 } 
