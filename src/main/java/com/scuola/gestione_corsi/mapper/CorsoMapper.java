@@ -2,6 +2,7 @@ package com.scuola.gestione_corsi.mapper;
 
 import com.scuola.gestione_corsi.dto.CorsoDTO;
 import com.scuola.gestione_corsi.model.Corso;
+import com.scuola.gestione_corsi.model.Categoria;
 import org.springframework.stereotype.Component;
 
 /**
@@ -50,6 +51,13 @@ public class CorsoMapper {
         corso.setDurata(dto.getDurata());
         corso.setMaxStudenti(dto.getMaxStudenti());
         corso.setPrezzo(dto.getPrezzo());
+        
+        // Aggiungo la categoria
+        if (dto.getCategoriaId() != null) {
+            Categoria categoria = new Categoria();
+            categoria.setId(dto.getCategoriaId());
+            corso.setCategoria(categoria);
+        }
         
         return corso;
     }
