@@ -26,6 +26,12 @@ public class Utente implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column
+    private String nome;
+
+    @Column
+    private String cognome;
+
     @Column(nullable = false, unique = true)
     private String email;
 
@@ -36,10 +42,10 @@ public class Utente implements UserDetails {
     @Column(nullable = false)
     private Ruolo ruolo;
 
-    @OneToOne(mappedBy = "utente", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "utente", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Studente studente;
 
-    @OneToOne(mappedBy = "utente", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "utente", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
     private Docente docente;
 
     @Override

@@ -1,0 +1,276 @@
+# Chiamate API per Sistema di Gestione Corsi
+
+## Autenticazione
+
+### Registrazione Utente
+- **Metodo**: POST
+- **URL**: http://localhost:8080/api/auth/register
+- **Body** (JSON):
+```json
+{
+    "nome": "Mario",
+    "cognome": "Rossi",
+    "email": "mario.rossi@example.com",
+    "password": "password123",
+    "ruolo": "STUDENTE"
+}
+```
+
+### Login Utente
+- **Metodo**: POST
+- **URL**: http://localhost:8080/api/auth/authenticate
+- **Body** (JSON):
+```json
+{
+    "email": "mario.rossi@example.com",
+    "password": "password123"
+}
+```
+
+## Corsi
+
+### Ottieni tutti i corsi
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/corsi
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Ottieni corso per ID
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/corsi/{id}
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Ottieni corsi per categoria
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/corsi/categoria/{categoriaId}
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Ottieni corsi per docente
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/corsi/docente/{docenteId}
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Crea nuovo corso
+- **Metodo**: POST
+- **URL**: http://localhost:8080/api/corsi
+- **Headers**: 
+  - Authorization: Bearer {token}
+  - Content-Type: application/json
+- **Body** (JSON):
+```json
+{
+    "nome": "Java Avanzato",
+    "descrizione": "Corso avanzato di programmazione Java",
+    "durata": 120,
+    "prezzo": 1500.0,
+    "maxStudenti": 20,
+    "categoriaId": 3,
+    "docenteId": 3
+}
+```
+
+### Aggiorna corso
+- **Metodo**: PUT
+- **URL**: http://localhost:8080/api/corsi/{id}
+- **Headers**: 
+  - Authorization: Bearer {token}
+  - Content-Type: application/json
+- **Body** (JSON):
+```json
+{
+    "nome": "Java Avanzato Aggiornato",
+    "descrizione": "Corso avanzato di programmazione Java - Edizione 2024",
+    "durata": 140,
+    "prezzo": 1600.0,
+    "maxStudenti": 25,
+    "categoriaId": 3,
+    "docenteId": 3
+}
+```
+
+### Elimina corso
+- **Metodo**: DELETE
+- **URL**: http://localhost:8080/api/corsi/{id}
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+## Categorie
+
+### Ottieni tutte le categorie
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/categorie
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Ottieni categoria per ID
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/categorie/{id}
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Crea nuova categoria
+- **Metodo**: POST
+- **URL**: http://localhost:8080/api/categorie
+- **Headers**: 
+  - Authorization: Bearer {token}
+  - Content-Type: application/json
+- **Body** (JSON):
+```json
+{
+    "nome": "Programmazione",
+    "descrizione": "Corsi di programmazione"
+}
+```
+
+### Aggiorna categoria
+- **Metodo**: PUT
+- **URL**: http://localhost:8080/api/categorie/{id}
+- **Headers**: 
+  - Authorization: Bearer {token}
+  - Content-Type: application/json
+- **Body** (JSON):
+```json
+{
+    "nome": "Programmazione Avanzata",
+    "descrizione": "Corsi avanzati di programmazione"
+}
+```
+
+### Elimina categoria
+- **Metodo**: DELETE
+- **URL**: http://localhost:8080/api/categorie/{id}
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+## Docenti
+
+### Ottieni tutti i docenti
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/docenti
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Ottieni docente per ID
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/docenti/{id}
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Crea nuovo docente
+- **Metodo**: POST
+- **URL**: http://localhost:8080/api/docenti
+- **Headers**: 
+  - Authorization: Bearer {token}
+  - Content-Type: application/json
+- **Body** (JSON):
+```json
+{
+    "nome": "Giuseppe",
+    "cognome": "Verdi",
+    "email": "giuseppe.verdi@example.com",
+    "specializzazione": "Java, Spring Boot",
+    "corsi": [1, 2]
+}
+```
+
+### Aggiorna docente
+- **Metodo**: PUT
+- **URL**: http://localhost:8080/api/docenti/{id}
+- **Headers**: 
+  - Authorization: Bearer {token}
+  - Content-Type: application/json
+- **Body** (JSON):
+```json
+{
+    "nome": "Giuseppe",
+    "cognome": "Verdi",
+    "email": "giuseppe.verdi@example.com",
+    "specializzazione": "Java, Spring Boot, Microservices",
+    "corsi": [1, 2, 3]
+}
+```
+
+### Elimina docente
+- **Metodo**: DELETE
+- **URL**: http://localhost:8080/api/docenti/{id}
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+## Iscrizioni
+
+### Ottieni tutte le iscrizioni
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/iscrizioni
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Ottieni iscrizione per ID
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/iscrizioni/{id}
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Crea nuova iscrizione
+- **Metodo**: POST
+- **URL**: http://localhost:8080/api/iscrizioni
+- **Headers**: 
+  - Authorization: Bearer {token}
+  - Content-Type: application/json
+- **Body** (JSON):
+```json
+{
+    "studenteId": 1,
+    "corsoId": 1,
+    "stato": "ATTIVA"
+}
+```
+
+### Aggiorna iscrizione
+- **Metodo**: PUT
+- **URL**: http://localhost:8080/api/iscrizioni/{id}
+- **Headers**: 
+  - Authorization: Bearer {token}
+  - Content-Type: application/json
+- **Body** (JSON):
+```json
+{
+    "stato": "COMPLETATA"
+}
+```
+
+### Elimina iscrizione
+- **Metodo**: DELETE
+- **URL**: http://localhost:8080/api/iscrizioni/{id}
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+## Note Importanti:
+1. Sostituire {token} con il token JWT ottenuto dal login
+2. Sostituire {id} con l'ID effettivo della risorsa
+3. Tutte le chiamate (tranne login e registrazione) richiedono l'header di autorizzazione
+4. I valori negli esempi JSON sono puramente indicativi
+5. Gli stati delle iscrizioni possibili sono: ATTIVA, SOSPESA, ANNULLATA, COMPLETATA
+6. I ruoli possibili sono: STUDENTE, DOCENTE, ADMIN
+
+## Progresso Test
+✅ Test completati:
+- Login utente
+- Operazioni sui corsi:
+  - Creazione corso (con categoriaId: 3 e docenteId: 3)
+  - Ottenimento lista corsi
+  - Ottenimento corso per ID
+  - Aggiornamento corso
+  - Eliminazione corso
+- Operazioni sulle categorie:
+  - Ottenimento lista categorie
+  - Creazione categoria
+  - Ottenimento categoria per ID
+  - Aggiornamento categoria
+  - Eliminazione categoria
+
+⏳ Test da completare:
+- Operazioni sui docenti
+- Operazioni sulle iscrizioni 
