@@ -4,6 +4,7 @@ import com.scuola.gestione_corsi.model.Docente;
 import com.scuola.gestione_corsi.model.Utente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -56,4 +57,7 @@ public interface DocenteRepository extends JpaRepository<Docente, Long> {
      * @return Il docente associato all'utente, se esiste
      */
     Optional<Docente> findByUtente(Utente utente);
+
+    @Query("SELECT d FROM Docente d LEFT JOIN FETCH d.corsi WHERE d.id = :id")
+    Optional<Docente> findByIdWithCorsi(@Param("id") Long id);
 } 

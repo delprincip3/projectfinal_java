@@ -26,7 +26,7 @@ public class DocenteService {
     }
 
     public DocenteDTO findById(Long id) {
-        return docenteRepository.findById(id)
+        return docenteRepository.findByIdWithCorsi(id)
                 .map(this::convertToDTO)
                 .orElseThrow(() -> new RuntimeException("Docente non trovato"));
     }
@@ -90,7 +90,7 @@ public class DocenteService {
     }
 
     private DocenteDTO convertToDTO(Docente docente) {
-        return DocenteDTO.builder()
+        DocenteDTO dto = DocenteDTO.builder()
                 .id(docente.getId())
                 .nome(docente.getNome())
                 .cognome(docente.getCognome())
@@ -100,5 +100,13 @@ public class DocenteService {
                 .tariffa(docente.getTariffa())
                 .utenteId(docente.getUtente().getId())
                 .build();
+        
+        if (docente.getCorsi() != null && !docente.getCorsi().isEmpty()) {
+            dto.setCorsi(docente.getCorsi().stream()
+                    .map(corso -> corso.getId())
+                    .collect(Collectors.toList()));
+        }
+        
+        return dto;
     }
 } 
