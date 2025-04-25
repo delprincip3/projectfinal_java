@@ -2,6 +2,10 @@ package com.scuola.gestione_corsi.mapper;
 
 import com.scuola.gestione_corsi.dto.LezioneDTO;
 import com.scuola.gestione_corsi.model.Lezione;
+import com.scuola.gestione_corsi.repository.AulaRepository;
+import com.scuola.gestione_corsi.repository.CorsoRepository;
+import com.scuola.gestione_corsi.repository.DocenteRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 /**
@@ -9,8 +13,13 @@ import org.springframework.stereotype.Component;
  * Fornisce metodi per la conversione tra entità e DTO.
  */
 @Component
+@RequiredArgsConstructor
 public class LezioneMapper {
     
+    private final CorsoRepository corsoRepository;
+    private final DocenteRepository docenteRepository;
+    private final AulaRepository aulaRepository;
+
     /**
      * Converte un'entità Lezione in un DTO.
      * @param lezione L'entità da convertire
@@ -27,9 +36,19 @@ public class LezioneMapper {
         dto.setDescrizione(lezione.getDescrizione());
         dto.setDataOra(lezione.getDataOra());
         dto.setDurata(lezione.getDurata());
-        dto.setCorsoId(lezione.getCorso().getId());
-        dto.setDocenteId(lezione.getDocente().getId());
-        dto.setAulaId(lezione.getAula().getId());
+        
+        // Imposta gli ID delle relazioni
+        if (lezione.getCorso() != null) {
+            dto.setCorsoId(lezione.getCorso().getId());
+        }
+        
+        if (lezione.getDocente() != null) {
+            dto.setDocenteId(lezione.getDocente().getId());
+        }
+        
+        if (lezione.getAula() != null) {
+            dto.setAulaId(lezione.getAula().getId());
+        }
         
         return dto;
     }
@@ -50,6 +69,22 @@ public class LezioneMapper {
         lezione.setDescrizione(dto.getDescrizione());
         lezione.setDataOra(dto.getDataOra());
         lezione.setDurata(dto.getDurata());
+        
+        // Imposta le relazioni
+        if (dto.getCorsoId() != null) {
+            corsoRepository.findById(dto.getCorsoId())
+                .ifPresent(lezione::setCorso);
+        }
+        
+        if (dto.getDocenteId() != null) {
+            docenteRepository.findById(dto.getDocenteId())
+                .ifPresent(lezione::setDocente);
+        }
+        
+        if (dto.getAulaId() != null) {
+            aulaRepository.findById(dto.getAulaId())
+                .ifPresent(lezione::setAula);
+        }
         
         return lezione;
     }

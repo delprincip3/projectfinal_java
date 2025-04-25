@@ -18,7 +18,7 @@ public class LezioneDTO {
     private String titolo;
     private String descrizione;
     private LocalDateTime dataOra;
-    private Integer durata;
+    private Integer durata; // in minuti
     private Long corsoId;
     private Long docenteId;
     private Long aulaId;

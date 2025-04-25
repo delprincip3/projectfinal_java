@@ -2,6 +2,8 @@ package com.scuola.gestione_corsi.repository;
 
 import com.scuola.gestione_corsi.model.Lezione;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -46,4 +48,34 @@ public interface LezioneRepository extends JpaRepository<Lezione, Long> {
 
     boolean existsByTitolo(String titolo);
     Optional<Lezione> findByTitolo(String titolo);
+
+    @Query(value = "SELECT CASE WHEN COUNT(l) > 0 THEN true ELSE false END " +
+           "FROM lezioni l " +
+           "WHERE l.aula_id = :aulaId " +
+           "AND l.id != :excludeId " +
+           "AND ((l.data_ora BETWEEN :inizio AND :fine) " +
+           "OR (l.data_ora + make_interval(mins => l.durata) BETWEEN :inizio AND :fine) " +
+           "OR (:inizio BETWEEN l.data_ora AND l.data_ora + make_interval(mins => l.durata)))", 
+           nativeQuery = true)
+    boolean existsByAulaIdAndDataOraBetween(
+        @Param("aulaId") Long aulaId,
+        @Param("inizio") LocalDateTime inizio,
+        @Param("fine") LocalDateTime fine,
+        @Param("excludeId") Long excludeId
+    );
+    
+    @Query(value = "SELECT CASE WHEN COUNT(l) > 0 THEN true ELSE false END " +
+           "FROM lezioni l " +
+           "WHERE l.docente_id = :docenteId " +
+           "AND l.id != :excludeId " +
+           "AND ((l.data_ora BETWEEN :inizio AND :fine) " +
+           "OR (l.data_ora + make_interval(mins => l.durata) BETWEEN :inizio AND :fine) " +
+           "OR (:inizio BETWEEN l.data_ora AND l.data_ora + make_interval(mins => l.durata)))", 
+           nativeQuery = true)
+    boolean existsByDocenteIdAndDataOraBetween(
+        @Param("docenteId") Long docenteId,
+        @Param("inizio") LocalDateTime inizio,
+        @Param("fine") LocalDateTime fine,
+        @Param("excludeId") Long excludeId
+    );
 } 
