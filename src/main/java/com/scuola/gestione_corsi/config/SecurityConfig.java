@@ -42,7 +42,9 @@ public class SecurityConfig {
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**", "/swagger-ui/**", "/api-docs/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/aule/**").hasAnyRole("ADMIN", "DOCENTE")
+                .requestMatchers("/api/export/**").hasAnyRole("ADMIN", "DOCENTE")
                 .requestMatchers("/api/utenti/*/password").hasAuthority("ROLE_ADMIN")
                 .requestMatchers("/api/utenti/**").hasAuthority("ROLE_ADMIN")
                 .requestMatchers("/api/categorie/**", "/api/docenti/**", "/api/corsi/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_DOCENTE")
