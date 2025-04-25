@@ -117,23 +117,14 @@ public class UtenteService {
     public void updatePassword(Long id, UpdatePasswordDTO dto, String emailAdmin) {
         log.debug("Tentativo di aggiornamento password per utente con id: {} da parte dell'admin: {}", id, emailAdmin);
         
-        // Verifica che l'utente che richiede l'aggiornamento sia un admin
-        Utente admin = utenteRepository.findByEmail(emailAdmin)
-                .orElseThrow(() -> new ResourceNotFoundException("Utente non trovato"));
-                
-        if (!admin.getRuolo().equals(Ruolo.ADMIN)) {
-            log.error("Tentativo di aggiornamento password da parte di un utente non autorizzato: {}", emailAdmin);
-            throw new UnauthorizedException("Solo gli admin possono aggiornare le password");
-        }
-        
-        // Trova l'utente e aggiorna solo la password
+        // Verifica che l'utente esista
         Utente utente = utenteRepository.findById(id)
                 .orElseThrow(() -> {
                     log.error("Utente non trovato con id: {}", id);
                     return new ResourceNotFoundException("Utente non trovato con id: " + id);
                 });
         
-        // Aggiorna solo la password
+        // Aggiorna la password
         String nuovaPasswordCriptata = passwordEncoder.encode(dto.getNuovaPassword());
         utenteRepository.updatePassword(id, nuovaPasswordCriptata);
         

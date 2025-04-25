@@ -1,11 +1,13 @@
 package com.scuola.gestione_corsi.controller;
 
 import com.scuola.gestione_corsi.dto.UtenteDTO;
+import com.scuola.gestione_corsi.dto.UpdatePasswordDTO;
 import com.scuola.gestione_corsi.exception.ResourceNotFoundException;
 import com.scuola.gestione_corsi.service.UtenteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,5 +43,18 @@ public class UtenteController {
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PutMapping("/{id}/password")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<Void> updatePassword(
+            @PathVariable Long id, 
+            @RequestBody UpdatePasswordDTO dto, 
+            Authentication authentication) {
+        
+        // Ottiene il nome utente (email) dell'utente autenticato
+        String adminEmail = authentication.getName();
+        utenteService.updatePassword(id, dto, adminEmail);
+        return ResponseEntity.ok().build();
     }
 } 
