@@ -1,15 +1,20 @@
 package com.scuola.gestione_corsi.service;
 
 import com.itextpdf.text.*;
-import com.itextpdf.text.pdf.PdfPCell;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.*;
 import com.scuola.gestione_corsi.model.*;
-import com.scuola.gestione_corsi.repository.StudenteRepository;
+import com.scuola.gestione_corsi.repository.*;
+import com.scuola.gestione_corsi.util.HeaderFooterPageEvent;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
+import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Stream;
 
 @Service
@@ -17,17 +22,35 @@ import java.util.stream.Stream;
 public class PdfService {
 
     private final StudenteRepository studenteRepository;
+    private static final Logger log = LoggerFactory.getLogger(PdfService.class);
 
     public byte[] generateProfiloStudente(Long studenteId) {
+        log.debug("Generazione profilo PDF per studente con ID: {}", studenteId);
         Studente studente = studenteRepository.findById(studenteId)
-                .orElseThrow(() -> new RuntimeException("Studente non trovato"));
+                .orElseThrow(() -> new RuntimeException("Studente non trovato con ID: " + studenteId));
 
-        Document document = new Document();
+        Document document = new Document(PageSize.A4);
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
         try {
-            PdfWriter.getInstance(document, out);
+            PdfWriter writer = PdfWriter.getInstance(document, out);
+            writer.setPageEvent(new HeaderFooterPageEvent("Profilo Studente", "Scuola Corsi Tecnici"));
             document.open();
+
+            // Aggiungo un watermark di confidenzialità
+            try {
+                PdfContentByte canvas = writer.getDirectContentUnder();
+                canvas.beginText();
+                canvas.setColorFill(BaseColor.LIGHT_GRAY);
+                canvas.setFontAndSize(BaseFont.createFont(BaseFont.HELVETICA, BaseFont.WINANSI, BaseFont.NOT_EMBEDDED), 60);
+                canvas.showTextAligned(Element.ALIGN_CENTER, "CONFIDENZIALE", 
+                    PageSize.A4.getWidth() / 2, 
+                    PageSize.A4.getHeight() / 2, 
+                    45);
+                canvas.endText();
+            } catch (Exception e) {
+                log.warn("Impossibile aggiungere il watermark: {}", e.getMessage());
+            }
 
             // Titolo
             Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18);
@@ -81,12 +104,34 @@ public class PdfService {
             document.close();
             return out.toByteArray();
         } catch (DocumentException e) {
+            log.error("Errore durante la generazione del PDF per lo studente {}: {}", studenteId, e.getMessage());
             throw new RuntimeException("Errore durante la generazione del PDF", e);
+        } catch (Exception e) {
+            log.error("Errore imprevisto durante la generazione del PDF per lo studente {}: {}", studenteId, e.getMessage());
+            throw new RuntimeException("Errore imprevisto durante la generazione del PDF", e);
+        } finally {
+            if (document.isOpen()) {
+                document.close();
+            }
         }
     }
 
     private void addTableRow(PdfPTable table, String label, String value) {
-        table.addCell(new Phrase(label, FontFactory.getFont(FontFactory.HELVETICA_BOLD)));
-        table.addCell(value);
+        Font labelFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10);
+        Font valueFont = FontFactory.getFont(FontFactory.HELVETICA, 10);
+        
+        PdfPCell labelCell = new PdfPCell(new Phrase(label, labelFont));
+        labelCell.setBorderWidth(0.5f);
+        labelCell.setPadding(5);
+        labelCell.setBackgroundColor(new BaseColor(240, 240, 240));
+        labelCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        
+        PdfPCell valueCell = new PdfPCell(new Phrase(value, valueFont));
+        valueCell.setBorderWidth(0.5f);
+        valueCell.setPadding(5);
+        valueCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+        
+        table.addCell(labelCell);
+        table.addCell(valueCell);
     }
 } 
