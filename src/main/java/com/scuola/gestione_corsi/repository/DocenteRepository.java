@@ -3,6 +3,7 @@ package com.scuola.gestione_corsi.repository;
 import com.scuola.gestione_corsi.model.Docente;
 import com.scuola.gestione_corsi.model.Utente;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -14,6 +15,13 @@ import java.util.Optional;
  */
 @Repository
 public interface DocenteRepository extends JpaRepository<Docente, Long> {
+    
+    /**
+     * Trova tutti i docenti ordinati per cognome e nome.
+     * @return Lista di docenti ordinata
+     */
+    @Query("SELECT DISTINCT d FROM Docente d LEFT JOIN FETCH d.corsi")
+    List<Docente> findAllWithCorsi();
     
     /**
      * Trova tutti i docenti ordinati per cognome e nome.
