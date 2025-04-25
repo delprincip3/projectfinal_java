@@ -61,8 +61,26 @@ public class DocenteService {
         return convertToDTO(docenteRepository.save(docente));
     }
 
+    @Transactional
     public void delete(Long id) {
-        docenteRepository.deleteById(id);
+        Docente docente = docenteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Docente non trovato"));
+        
+        // Elimina prima le lezioni associate
+        if (docente.getLezioni() != null) {
+            docente.getLezioni().clear();
+        }
+        
+        // Elimina le associazioni con i corsi
+        if (docente.getCorsi() != null) {
+            docente.getCorsi().clear();
+        }
+        
+        // Elimina il docente
+        docenteRepository.delete(docente);
+        
+        // Elimina l'utente associato
+        utenteRepository.delete(docente.getUtente());
     }
 
     public List<DocenteDTO> findBySpecializzazione(String specializzazione) {
