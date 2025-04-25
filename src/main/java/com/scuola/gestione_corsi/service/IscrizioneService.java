@@ -63,12 +63,15 @@ public class IscrizioneService {
         return iscrizioneMapper.toDTO(saved);
     }
 
+    @Transactional
     public IscrizioneDTO update(Long id, IscrizioneDTO dto) {
-        if (!iscrizioneRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Iscrizione non trovata con id: " + id);
-        }
-        dto.setId(id);
-        Iscrizione iscrizione = iscrizioneMapper.toEntity(dto);
+        Iscrizione iscrizione = iscrizioneRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Iscrizione non trovata con id: " + id));
+        
+        // Aggiorna solo i campi modificabili
+        iscrizione.setStato(dto.getStato());
+        iscrizione.setMetodoPagamento(dto.getMetodoPagamento());
+        
         Iscrizione updated = iscrizioneRepository.save(iscrizione);
         return iscrizioneMapper.toDTO(updated);
     }

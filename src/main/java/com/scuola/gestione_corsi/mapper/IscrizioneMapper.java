@@ -2,6 +2,8 @@ package com.scuola.gestione_corsi.mapper;
 
 import com.scuola.gestione_corsi.dto.IscrizioneDTO;
 import com.scuola.gestione_corsi.model.Iscrizione;
+import com.scuola.gestione_corsi.model.Studente;
+import com.scuola.gestione_corsi.model.Corso;
 import org.springframework.stereotype.Component;
 
 /**
@@ -47,6 +49,16 @@ public class IscrizioneMapper {
         iscrizione.setDataIscrizione(dto.getDataIscrizione());
         iscrizione.setStato(dto.getStato());
         iscrizione.setMetodoPagamento(dto.getMetodoPagamento());
+        
+        // Imposta lo studente
+        Studente studente = new Studente();
+        studente.setId(dto.getStudenteId());
+        iscrizione.setStudente(studente);
+        
+        // Imposta il corso
+        Corso corso = new Corso();
+        corso.setId(dto.getCorsoId());
+        iscrizione.setCorso(corso);
         
         return iscrizione;
     }
