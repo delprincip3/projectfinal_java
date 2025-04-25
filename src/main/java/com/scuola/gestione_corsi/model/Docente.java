@@ -40,7 +40,7 @@ public class Docente {
     @JoinColumn(name = "utente_id", nullable = false)
     private Utente utente;
 
-    @ManyToMany(mappedBy = "docenti")
+    @ManyToMany(mappedBy = "docenti", fetch = FetchType.EAGER)
     private List<Corso> corsi;
 
     @OneToMany(mappedBy = "docente", cascade = CascadeType.ALL)

@@ -59,8 +59,28 @@ public class CorsoService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public CorsoDTO create(CorsoDTO dto) {
-        Corso corso = corsoMapper.toEntity(dto);
+        Corso corso = new Corso();
+        corso.setNome(dto.getNome());
+        corso.setDescrizione(dto.getDescrizione());
+        corso.setDurata(dto.getDurata());
+        corso.setMaxStudenti(dto.getMaxStudenti());
+        corso.setPrezzo(dto.getPrezzo());
+        
+        // Imposta la categoria
+        if (dto.getCategoriaId() != null) {
+            Categoria categoria = categoriaRepository.findById(dto.getCategoriaId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Categoria non trovata con id: " + dto.getCategoriaId()));
+            corso.setCategoria(categoria);
+        }
+        
+        // Imposta i docenti
+        if (dto.getDocenti() != null && !dto.getDocenti().isEmpty()) {
+            List<Docente> docenti = docenteRepository.findAllById(dto.getDocenti());
+            corso.setDocenti(docenti);
+        }
+        
         Corso saved = corsoRepository.save(corso);
         return corsoMapper.toDTO(saved);
     }
@@ -77,9 +97,11 @@ public class CorsoService {
         corso.setPrezzo(dto.getPrezzo());
         
         // Aggiorno la categoria
-        Categoria categoria = categoriaRepository.findById(dto.getCategoriaId())
-                .orElseThrow(() -> new ResourceNotFoundException("Categoria non trovata con id: " + dto.getCategoriaId()));
-        corso.setCategoria(categoria);
+        if (dto.getCategoriaId() != null) {
+            Categoria categoria = categoriaRepository.findById(dto.getCategoriaId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Categoria non trovata con id: " + dto.getCategoriaId()));
+            corso.setCategoria(categoria);
+        }
         
         // Aggiorno i docenti
         if (dto.getDocenti() != null) {
