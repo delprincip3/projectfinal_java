@@ -4,7 +4,11 @@ import com.scuola.gestione_corsi.dto.CorsoDTO;
 import com.scuola.gestione_corsi.exception.ResourceNotFoundException;
 import com.scuola.gestione_corsi.mapper.CorsoMapper;
 import com.scuola.gestione_corsi.model.Corso;
+import com.scuola.gestione_corsi.model.Categoria;
+import com.scuola.gestione_corsi.model.Docente;
 import com.scuola.gestione_corsi.repository.CorsoRepository;
+import com.scuola.gestione_corsi.repository.DocenteRepository;
+import com.scuola.gestione_corsi.repository.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +25,12 @@ public class CorsoService {
 
     @Autowired
     private CorsoMapper corsoMapper;
+
+    @Autowired
+    private DocenteRepository docenteRepository;
+
+    @Autowired
+    private CategoriaRepository categoriaRepository;
 
     public List<CorsoDTO> findAll() {
         return corsoRepository.findAll()
@@ -55,12 +65,28 @@ public class CorsoService {
         return corsoMapper.toDTO(saved);
     }
 
+    @Transactional
     public CorsoDTO update(Long id, CorsoDTO dto) {
-        if (!corsoRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Corso non trovato con id: " + id);
+        Corso corso = corsoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Corso non trovato con id: " + id));
+
+        corso.setNome(dto.getNome());
+        corso.setDescrizione(dto.getDescrizione());
+        corso.setDurata(dto.getDurata());
+        corso.setMaxStudenti(dto.getMaxStudenti());
+        corso.setPrezzo(dto.getPrezzo());
+        
+        // Aggiorno la categoria
+        Categoria categoria = categoriaRepository.findById(dto.getCategoriaId())
+                .orElseThrow(() -> new ResourceNotFoundException("Categoria non trovata con id: " + dto.getCategoriaId()));
+        corso.setCategoria(categoria);
+        
+        // Aggiorno i docenti
+        if (dto.getDocenti() != null) {
+            List<Docente> docenti = docenteRepository.findAllById(dto.getDocenti());
+            corso.setDocenti(docenti);
         }
-        dto.setId(id);
-        Corso corso = corsoMapper.toEntity(dto);
+
         Corso updated = corsoRepository.save(corso);
         return corsoMapper.toDTO(updated);
     }

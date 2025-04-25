@@ -20,7 +20,7 @@ public class DocenteService {
     private final UtenteRepository utenteRepository;
 
     public List<DocenteDTO> findAll() {
-        return docenteRepository.findAllWithCorsi().stream()
+        return docenteRepository.findAll().stream()
                 .map(this::convertToDTO)
                 .collect(Collectors.toList());
     }

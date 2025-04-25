@@ -21,7 +21,7 @@ public interface DocenteRepository extends JpaRepository<Docente, Long> {
      * @return Lista di docenti ordinata
      */
     @Query("SELECT DISTINCT d FROM Docente d LEFT JOIN FETCH d.corsi")
-    List<Docente> findAllWithCorsi();
+    List<Docente> findAll();
     
     /**
      * Trova tutti i docenti ordinati per cognome e nome.

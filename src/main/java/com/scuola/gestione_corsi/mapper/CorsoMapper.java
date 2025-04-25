@@ -3,7 +3,9 @@ package com.scuola.gestione_corsi.mapper;
 import com.scuola.gestione_corsi.dto.CorsoDTO;
 import com.scuola.gestione_corsi.model.Corso;
 import com.scuola.gestione_corsi.model.Categoria;
+import com.scuola.gestione_corsi.model.Docente;
 import org.springframework.stereotype.Component;
+import java.util.stream.Collectors;
 
 /**
  * Mapper per l'entità Corso.
@@ -30,6 +32,13 @@ public class CorsoMapper {
         dto.setMaxStudenti(corso.getMaxStudenti());
         dto.setPrezzo(corso.getPrezzo());
         dto.setCategoriaId(corso.getCategoria().getId());
+        
+        // Aggiungo la lista degli ID dei docenti
+        if (corso.getDocenti() != null) {
+            dto.setDocenti(corso.getDocenti().stream()
+                    .map(Docente::getId)
+                    .collect(Collectors.toList()));
+        }
         
         return dto;
     }
