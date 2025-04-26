@@ -1,7 +1,7 @@
 package com.scuola.gestione_corsi.service;
 
 import com.scuola.gestione_corsi.dto.LezioneDTO;
-import com.scuola.gestione_corsi.exception.ResourceNotFoundException;
+
 import com.scuola.gestione_corsi.mapper.LezioneMapper;
 import com.scuola.gestione_corsi.model.Lezione;
 import com.scuola.gestione_corsi.repository.LezioneRepository;
