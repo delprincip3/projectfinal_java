@@ -22,6 +22,7 @@ import java.util.stream.Stream;
 public class PdfService {
 
     private final StudenteRepository studenteRepository;
+    private final ValutazioneRepository valutazioneRepository;
     private static final Logger log = LoggerFactory.getLogger(PdfService.class);
 
     public byte[] generateProfiloStudente(Long studenteId) {
@@ -93,7 +94,10 @@ public class PdfService {
                 corsiTable.addCell(iscrizione.getCorso().getNome());
                 corsiTable.addCell(iscrizione.getDataIscrizione().toString());
                 corsiTable.addCell(iscrizione.getStato().toString());
-                double mediaVoti = iscrizione.getValutazioni().stream()
+                
+                // Carica le valutazioni per questa iscrizione
+                List<Valutazione> valutazioni = valutazioneRepository.findByIscrizione_Id(iscrizione.getId());
+                double mediaVoti = valutazioni.stream()
                         .mapToInt(Valutazione::getVoto)
                         .average()
                         .orElse(0.0);

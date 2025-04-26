@@ -53,15 +53,20 @@ public class ExportService {
 
     public byte[] exportIscrizioniToCsv() {
         List<Iscrizione> iscrizioni = iscrizioneRepository.findAll();
-        StringBuilder csv = new StringBuilder("Data Iscrizione,Stato,Metodo Pagamento,Studente,Corso\n");
+        StringBuilder csv = new StringBuilder("Data Iscrizione,Stato,Metodo Pagamento,Studente,Corso,Valutazioni\n");
         
         for (Iscrizione iscrizione : iscrizioni) {
+            // Carica esplicitamente le relazioni
+            Studente studente = iscrizione.getStudente();
+            Corso corso = iscrizione.getCorso();
+            
             csv.append(iscrizione.getDataIscrizione()).append(",")
                .append(iscrizione.getStato()).append(",")
                .append(iscrizione.getMetodoPagamento()).append(",")
-               .append(iscrizione.getStudente().getNome()).append(" ")
-               .append(iscrizione.getStudente().getCognome()).append(",")
-               .append(iscrizione.getCorso().getNome()).append("\n");
+               .append(studente.getNome()).append(" ")
+               .append(studente.getCognome()).append(",")
+               .append(corso.getNome()).append(",")
+               .append(iscrizione.getValutazioni().size()).append("\n");
         }
         
         return csv.toString().getBytes();
