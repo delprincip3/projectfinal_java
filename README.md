@@ -1,140 +1,113 @@
-# Sistema di Gestione Corsi Post-Diploma
+# Sistema di Gestione Corsi
 
 ## Obiettivo
-Sviluppo di un sistema completo per la gestione di una scuola di corsi tecnici post-diploma, con funzionalità di amministrazione, gestione corsi, iscrizioni e reportistica.
-
-## Requisiti di Sistema
-- Java 21
-- PostgreSQL 15+
-- Maven 3.8+
-- RAM minima: 4GB
-- Spazio su disco: 2GB
+Il Sistema di Gestione Corsi è un'applicazione web che permette la gestione completa di corsi formativi, studenti, docenti e tutte le attività correlate. L'obiettivo principale è fornire una piattaforma efficiente per la gestione di corsi didattici, iscrizioni, presenze, valutazioni e pagamenti.
 
 ## Tecnologie
-- **Backend**: Spring Boot 3.x
-- **Database**: PostgreSQL
-- **ORM**: Spring Data JPA
-- **Sicurezza**: Spring Security con JWT
-- **Documentazione API**: Swagger/OpenAPI
-- **Librerie Utili**: 
-  - Lombok per la riduzione del boilerplate code
-  - Apache POI per la gestione dei file Excel
-  - iText PDF per la generazione di documenti PDF
+- **Backend**: 
+  - Java 17
+  - Spring Boot 3.x
+  - Spring Security con JWT
+  - Spring Data JPA
+  - Hibernate
+  - PostgreSQL
+  - Lombok
+  - iTextPDF per la generazione di PDF
+  - Apache POI per la gestione di file Excel
+  - OpenCSV per la gestione di file CSV
 
-## Configurazione Iniziale
-
-### 1. Configurazione Database
-1. Installare PostgreSQL se non già installato
-2. Creare un nuovo database:
-   ```bash
-   psql -U postgres -f sql/01_create_database.sql
-   ```
-3. Creare le tabelle:
-   ```bash
-   psql -U postgres -d gestione_corsi -f sql/02_create_tables.sql
-   ```
-4. Inserire dati di esempio (opzionale):
-   ```bash
-   psql -U postgres -d gestione_corsi -f sql/03_insert_example_data.sql
-   ```
-
-### 2. Configurazione Applicazione
-1. Copiare il file di configurazione:
-   ```bash
-   cp configuration/application.properties.example src/main/resources/application.properties
-   ```
-2. Modificare le seguenti proprietà nel file `application.properties`:
-   - `spring.datasource.password`: password del database
-   - `jwt.secret`: chiave segreta per JWT (almeno 32 caratteri)
-   - `spring.mail.username`: email per le notifiche
-   - `spring.mail.password`: password dell'email
-
-## Avvio del Progetto
-1. Clonare il repository
-2. Configurare il database come descritto sopra
-3. Configurare l'applicazione come descritto sopra
-4. Eseguire il comando:
-   ```bash
-   mvn spring-boot:run
-   ```
-5. Accedere all'interfaccia Swagger su: `http://localhost:8080/api/swagger-ui.html`
-
-## Credenziali di Default
-- **Admin**:
-  - Username: admin
-  - Password: admin123
-- **Docente**:
-  - Username: docente1
-  - Password: password123
-- **Studente**:
-  - Username: studente1
-  - Password: password123
-
-## Query Utili
-Il file `sql/04_queries_utili.sql` contiene query predefinite per:
-- Lista studenti iscritti a un corso
-- Calendario lezioni
-- Presenze degli studenti
-- Materiali didattici
-- Valutazioni medie
-- Stato pagamenti
-- Aule disponibili
-- Docenti e loro corsi
+- **Frontend**:
+  - React.js
+  - Material-UI
+  - Axios per le chiamate API
+  - React Router per la navigazione
 
 ## Architettura
-- Architettura RESTful basata su microservizi
-- Pattern MVC (Model-View-Controller)
-- JWT per l'autenticazione stateless
-- Configurazione basata su properties
+L'applicazione segue un'architettura RESTful con:
+- Controller Layer: Gestisce le richieste HTTP e le risposte
+- Service Layer: Implementa la logica di business
+- Repository Layer: Gestisce l'accesso ai dati
+- Model Layer: Definisce le entità del dominio
+- DTO Layer: Gestisce il trasferimento dei dati
+- Mapper Layer: Converte tra entità e DTO
 
 ## Sicurezza e autenticazione
 - Autenticazione basata su JWT (JSON Web Token)
-- Ruoli utente implementati (ADMIN, DOCENTE, STUDENTE)
+- Ruoli implementati: ADMIN, DOCENTE, STUDENTE
+- Endpoint protetti con autorizzazioni basate sui ruoli
 - Password crittografate con BCrypt
-- Protezione CSRF
-- Gestione sessioni stateless
+- Validazione dei dati in input
+- Protezione contro attacchi CSRF
 
 ## Funzionalità principali
-- Gestione utenti e ruoli
-- Gestione corsi e programmi
-- Sistema di iscrizione
-- Gestione presenze
-- Generazione report in Excel e PDF
+1. **Gestione Corsi**
+   - Creazione, modifica, eliminazione corsi
+   - Assegnazione docenti
+   - Gestione categorie
+   - Gestione aule
+
+2. **Gestione Utenti**
+   - Registrazione e login
+   - Gestione profili
+   - Gestione ruoli
+
+3. **Gestione Iscrizioni**
+   - Registrazione studenti ai corsi
+   - Gestione stati iscrizione
+   - Monitoraggio pagamenti
+
+4. **Gestione Lezioni**
+   - Programmazione lezioni
+   - Gestione presenze
+   - Registrazione valutazioni
+
+5. **Gestione Materiali**
+   - Upload e download materiali didattici
+   - Assegnazione materiali alle lezioni
 
 ## Funzionalità aggiuntive
-- API documentata con Swagger
-- Logging configurabile
-- Validazione input
-- Gestione errori personalizzata
+1. **Export Dati**
+   - Generazione PDF profili studenti
+   - Export CSV di studenti, docenti e iscrizioni
+   - Export Excel dei corsi
+
+2. **Reportistica**
+   - Statistiche presenze
+   - Report valutazioni
+   - Monitoraggio pagamenti
 
 ## Testing
-- Test di integrazione con Spring Boot Test
-- Test di sicurezza con Spring Security Test
-- Test delle API con Swagger UI
+- Test unitari con JUnit
+- Test di integrazione
+- Test delle API con Postman
+- Validazione dei dati
+- Gestione errori
+
+## Avvio del progetto
+1. Clonare il repository
+2. Configurare il database PostgreSQL
+3. Modificare le configurazioni in `application.properties`
+4. Eseguire il comando `mvn spring-boot:run`
+5. Accedere all'applicazione su `http://localhost:8080`
+
+## Dataset iniziale
+Il sistema include un dataset iniziale con:
+- Categorie di corsi predefinite
+- Docenti di esempio
+- Aule preconfigurate
+- Ruoli utente standard
 
 ## Design Pattern utilizzati
 - Repository Pattern
 - Service Layer Pattern
 - DTO Pattern
-- Builder Pattern (con Lombok)
-- Filter Pattern (per JWT)
-- Strategy Pattern (per la generazione report)
+- Mapper Pattern
+- Factory Pattern
+- Strategy Pattern per l'export
 
 ## Note finali
-Il progetto è stato sviluppato seguendo le best practices di Spring Boot e Java. La documentazione completa delle API è disponibile tramite Swagger UI dopo l'avvio dell'applicazione.
-
-## Risoluzione dei problemi comuni
-1. **Errore di connessione al database**:
-   - Verificare che PostgreSQL sia in esecuzione
-   - Controllare le credenziali nel file `application.properties`
-   - Verificare che il database `gestione_corsi` esista
-
-2. **Errore di autenticazione**:
-   - Verificare che l'utente esista nel database
-   - Controllare che la password sia corretta
-   - Verificare che il ruolo sia corretto
-
-3. **Errore di avvio dell'applicazione**:
-   - Verificare che tutte le dipendenze siano installate
-   - Controllare che la porta 8080 sia disponibile
-   - Verificare che Java 21 sia installato
+- Il sistema è completamente documentato con JavaDoc
+- Tutte le API sono documentate nel file `postman_requests.txt`
+- Il codice segue le best practices di Spring Boot
+- La sicurezza è implementata seguendo gli standard OWASP
+- Il sistema è scalabile e mantenibile

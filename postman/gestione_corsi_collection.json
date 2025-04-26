@@ -1,0 +1,336 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+		"name": "Gestione Corsi API",
+		"description": "Collezione di API per il Sistema di Gestione Corsi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Autenticazione",
+			"item": [
+				{
+					"name": "Registrazione Utente",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Mario\",\n    \"cognome\": \"Rossi\",\n    \"email\": \"mario.rossi@example.com\",\n    \"password\": \"password123\",\n    \"ruolo\": \"STUDENTE\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/register",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "auth", "register"]
+						}
+					}
+				},
+				{
+					"name": "Login Utente",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"mario.rossi@example.com\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/authenticate",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "auth", "authenticate"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Corsi",
+			"item": [
+				{
+					"name": "Ottieni tutti i corsi",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/corsi",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "corsi"]
+						}
+					}
+				},
+				{
+					"name": "Ottieni corso per ID",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/corsi/{{corsoId}}",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "corsi", "{{corsoId}}"]
+						}
+					}
+				},
+				{
+					"name": "Crea nuovo corso",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Java Avanzato\",\n    \"descrizione\": \"Corso avanzato di programmazione Java\",\n    \"durata\": 120,\n    \"prezzo\": 1500.0,\n    \"maxStudenti\": 20,\n    \"categoriaId\": 3,\n    \"docenteId\": 3\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/corsi",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "corsi"]
+						}
+					}
+				},
+				{
+					"name": "Aggiorna corso",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nome\": \"Java Avanzato Aggiornato\",\n    \"descrizione\": \"Corso avanzato di programmazione Java - Edizione 2024\",\n    \"durata\": 140,\n    \"prezzo\": 1600.0,\n    \"maxStudenti\": 25,\n    \"categoriaId\": 3,\n    \"docenteId\": 3\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/corsi/{{corsoId}}",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "corsi", "{{corsoId}}"]
+						}
+					}
+				},
+				{
+					"name": "Elimina corso",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/corsi/{{corsoId}}",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "corsi", "{{corsoId}}"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Iscrizioni",
+			"item": [
+				{
+					"name": "Ottieni tutte le iscrizioni",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/iscrizioni",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "iscrizioni"]
+						}
+					}
+				},
+				{
+					"name": "Crea nuova iscrizione",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"studenteId\": 1,\n    \"corsoId\": 1,\n    \"stato\": \"ATTIVA\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/iscrizioni",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "iscrizioni"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Presenze",
+			"item": [
+				{
+					"name": "Crea nuova presenza",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"dataPresenza\": \"2024-04-26T10:00:00\",\n    \"presente\": true,\n    \"iscrizioneId\": 1,\n    \"lezioneId\": 1\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/presenze",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "presenze"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Valutazioni",
+			"item": [
+				{
+					"name": "Crea nuova valutazione",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"voto\": 8,\n    \"commento\": \"Ottimo lavoro\",\n    \"dataValutazione\": \"2024-04-26\",\n    \"iscrizioneId\": 1\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/valutazioni",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "valutazioni"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Pagamenti",
+			"item": [
+				{
+					"name": "Crea nuovo pagamento",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"importo\": 1500.0,\n    \"dataPagamento\": \"2024-04-26\",\n    \"metodoPagamento\": \"CARTA_CREDITO\",\n    \"iscrizioneId\": 1\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/pagamenti",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "pagamenti"]
+						}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "token",
+			"value": "inserisci_qui_il_tuo_token_jwt",
+			"type": "string"
+		},
+		{
+			"key": "corsoId",
+			"value": "1",
+			"type": "string"
+		}
+	]
+} 

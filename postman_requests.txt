@@ -159,6 +159,12 @@
 - **Headers**: 
   - Authorization: Bearer {token}
 
+### Ottieni docenti per specializzazione
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/docenti/specializzazione/{specializzazione}
+- **Headers**: 
+  - Authorization: Bearer {token}
+
 ### Crea nuovo docente
 - **Metodo**: POST
 - **URL**: http://localhost:8080/api/docenti
@@ -213,6 +219,24 @@
 - **Headers**: 
   - Authorization: Bearer {token}
 
+### Ottieni iscrizioni per studente
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/iscrizioni/studente/{studenteId}
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Ottieni iscrizioni per corso
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/iscrizioni/corso/{corsoId}
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Ottieni iscrizioni per stato
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/iscrizioni/stato/{stato}
+- **Headers**: 
+  - Authorization: Bearer {token}
+
 ### Crea nuova iscrizione
 - **Metodo**: POST
 - **URL**: http://localhost:8080/api/iscrizioni
@@ -247,6 +271,359 @@
 - **Headers**: 
   - Authorization: Bearer {token}
 
+## Lezioni
+
+### Ottieni tutte le lezioni
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/lezioni
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Ottieni lezione per ID
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/lezioni/{id}
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Ottieni lezioni per corso
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/lezioni/corso/{corsoId}
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Ottieni lezioni per docente
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/lezioni/docente/{docenteId}
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Ottieni lezioni per aula
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/lezioni/aula/{aulaId}
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Crea nuova lezione
+- **Metodo**: POST
+- **URL**: http://localhost:8080/api/lezioni
+- **Headers**: 
+  - Authorization: Bearer {token}
+  - Content-Type: application/json
+- **Body** (JSON):
+```json
+{
+    "titolo": "Introduzione a Spring Boot",
+    "descrizione": "Prima lezione sul framework Spring Boot",
+    "dataOra": "2024-04-26T10:00:00",
+    "durata": 120,
+    "corsoId": 1,
+    "docenteId": 1,
+    "aulaId": 1
+}
+```
+
+### Aggiorna lezione
+- **Metodo**: PUT
+- **URL**: http://localhost:8080/api/lezioni/{id}
+- **Headers**: 
+  - Authorization: Bearer {token}
+  - Content-Type: application/json
+- **Body** (JSON):
+```json
+{
+    "titolo": "Spring Boot Avanzato",
+    "descrizione": "Lezione avanzata su Spring Boot",
+    "dataOra": "2024-04-27T10:00:00",
+    "durata": 180,
+    "corsoId": 1,
+    "docenteId": 1,
+    "aulaId": 1
+}
+```
+
+### Elimina lezione
+- **Metodo**: DELETE
+- **URL**: http://localhost:8080/api/lezioni/{id}
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+## Presenze
+
+### Ottieni tutte le presenze
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/presenze
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Ottieni presenza per ID
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/presenze/{id}
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Ottieni presenze per iscrizione
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/presenze/iscrizione/{iscrizioneId}
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Crea nuova presenza
+- **Metodo**: POST
+- **URL**: http://localhost:8080/api/presenze
+- **Headers**: 
+  - Authorization: Bearer {token}
+  - Content-Type: application/json
+- **Body** (JSON):
+```json
+{
+    "dataPresenza": "2024-04-26T10:00:00",
+    "presente": true,
+    "iscrizioneId": 1,
+    "lezioneId": 1
+}
+```
+
+### Aggiorna presenza
+- **Metodo**: PUT
+- **URL**: http://localhost:8080/api/presenze/{id}
+- **Headers**: 
+  - Authorization: Bearer {token}
+  - Content-Type: application/json
+- **Body** (JSON):
+```json
+{
+    "dataPresenza": "2024-04-26T10:00:00",
+    "presente": false,
+    "iscrizioneId": 1,
+    "lezioneId": 1
+}
+```
+
+## Valutazioni
+
+### Ottieni tutte le valutazioni
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/valutazioni
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Ottieni valutazione per ID
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/valutazioni/{id}
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Ottieni valutazioni per iscrizione
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/valutazioni/iscrizione/{iscrizioneId}
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Crea nuova valutazione
+- **Metodo**: POST
+- **URL**: http://localhost:8080/api/valutazioni
+- **Headers**: 
+  - Authorization: Bearer {token}
+  - Content-Type: application/json
+- **Body** (JSON):
+```json
+{
+    "voto": 8,
+    "commento": "Ottimo lavoro",
+    "dataValutazione": "2024-04-26",
+    "iscrizioneId": 1
+}
+```
+
+### Aggiorna valutazione
+- **Metodo**: PUT
+- **URL**: http://localhost:8080/api/valutazioni/{id}
+- **Headers**: 
+  - Authorization: Bearer {token}
+  - Content-Type: application/json
+- **Body** (JSON):
+```json
+{
+    "voto": 9,
+    "commento": "Eccellente lavoro",
+    "dataValutazione": "2024-04-26",
+    "iscrizioneId": 1
+}
+```
+
+## Pagamenti
+
+### Ottieni tutti i pagamenti
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/pagamenti
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Ottieni pagamento per ID
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/pagamenti/{id}
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Ottieni pagamenti per iscrizione
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/pagamenti/iscrizione/{iscrizioneId}
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Crea nuovo pagamento
+- **Metodo**: POST
+- **URL**: http://localhost:8080/api/pagamenti
+- **Headers**: 
+  - Authorization: Bearer {token}
+  - Content-Type: application/json
+- **Body** (JSON):
+```json
+{
+    "importo": 1500.0,
+    "dataPagamento": "2024-04-26",
+    "metodoPagamento": "CARTA_CREDITO",
+    "iscrizioneId": 1
+}
+```
+
+### Aggiorna pagamento
+- **Metodo**: PUT
+- **URL**: http://localhost:8080/api/pagamenti/{id}
+- **Headers**: 
+  - Authorization: Bearer {token}
+  - Content-Type: application/json
+- **Body** (JSON):
+```json
+{
+    "importo": 1600.0,
+    "dataPagamento": "2024-04-26",
+    "metodoPagamento": "BONIFICO",
+    "iscrizioneId": 1
+}
+```
+
+## Aule
+
+### Ottieni tutte le aule
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/aule
+- **Headers**: 
+  - Authorization: Bearer {token}
+  - Ruoli richiesti: ADMIN, DOCENTE
+
+### Ottieni aula per ID
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/aule/{id}
+- **Headers**: 
+  - Authorization: Bearer {token}
+  - Ruoli richiesti: ADMIN, DOCENTE
+
+### Crea nuova aula
+- **Metodo**: POST
+- **URL**: http://localhost:8080/api/aule
+- **Headers**: 
+  - Authorization: Bearer {token}
+  - Content-Type: application/json
+  - Ruoli richiesti: ADMIN
+- **Body** (JSON):
+```json
+{
+    "nome": "Aula 101",
+    "capienza": 30
+}
+```
+
+### Aggiorna aula
+- **Metodo**: PUT
+- **URL**: http://localhost:8080/api/aule/{id}
+- **Headers**: 
+  - Authorization: Bearer {token}
+  - Content-Type: application/json
+  - Ruoli richiesti: ADMIN
+- **Body** (JSON):
+```json
+{
+    "nome": "Aula 101",
+    "capienza": 35
+}
+```
+
+### Elimina aula
+- **Metodo**: DELETE
+- **URL**: http://localhost:8080/api/aule/{id}
+- **Headers**: 
+  - Authorization: Bearer {token}
+  - Ruoli richiesti: ADMIN
+
+## Materiali Didattici
+
+### Ottieni tutti i materiali didattici
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/materiali-didattici
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Ottieni materiale didattico per ID
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/materiali-didattici/{id}
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Ottieni materiali didattici per lezione
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/materiali-didattici/lezione/{lezioneId}
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Crea nuovo materiale didattico
+- **Metodo**: POST
+- **URL**: http://localhost:8080/api/materiali-didattici
+- **Headers**: 
+  - Authorization: Bearer {token}
+  - Content-Type: application/json
+- **Body** (JSON):
+```json
+{
+    "titolo": "Slide Spring Boot",
+    "descrizione": "Slide della lezione su Spring Boot",
+    "url": "https://example.com/slides",
+    "lezioneId": 1
+}
+```
+
+## Export
+
+### Esporta studenti in CSV
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/export/studenti/csv
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Esporta docenti in CSV
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/export/docenti/csv
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Esporta iscrizioni in CSV
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/export/iscrizioni/csv
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Esporta corsi in Excel
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/export/corsi/excel
+- **Headers**: 
+  - Authorization: Bearer {token}
+
+### Genera profilo studente in PDF
+- **Metodo**: GET
+- **URL**: http://localhost:8080/api/export/studenti/{id}/profilo
+- **Headers**: 
+  - Authorization: Bearer {token}
+
 ## Note Importanti:
 1. Sostituire {token} con il token JWT ottenuto dal login
 2. Sostituire {id} con l'ID effettivo della risorsa
@@ -254,6 +631,7 @@
 4. I valori negli esempi JSON sono puramente indicativi
 5. Gli stati delle iscrizioni possibili sono: ATTIVA, SOSPESA, ANNULLATA, COMPLETATA
 6. I ruoli possibili sono: STUDENTE, DOCENTE, ADMIN
+7. I metodi di pagamento possibili sono: CARTA_CREDITO, BONIFICO, CONTANTI
 
 ## Progresso Test
 ✅ Test completati:
@@ -270,7 +648,68 @@
   - Ottenimento categoria per ID
   - Aggiornamento categoria
   - Eliminazione categoria
+- Operazioni sui docenti:
+  - Ottenimento lista docenti
+  - Ottenimento docente per ID
+  - Ottenimento docenti per specializzazione
+  - Creazione docente
+  - Aggiornamento docente
+  - Eliminazione docente
+- Operazioni sulle iscrizioni:
+  - Ottenimento lista iscrizioni
+  - Ottenimento iscrizione per ID
+  - Ottenimento iscrizioni per studente
+  - Ottenimento iscrizioni per corso
+  - Ottenimento iscrizioni per stato
+  - Creazione iscrizione
+  - Aggiornamento iscrizione
+  - Eliminazione iscrizione
+- Operazioni sulle lezioni:
+  - Ottenimento lista lezioni
+  - Ottenimento lezione per ID
+  - Ottenimento lezioni per corso
+  - Ottenimento lezioni per docente
+  - Ottenimento lezioni per aula
+  - Creazione lezione
+  - Aggiornamento lezione
+  - Eliminazione lezione
+- Operazioni sulle presenze:
+  - Ottenimento lista presenze
+  - Ottenimento presenza per ID
+  - Ottenimento presenze per iscrizione
+  - Creazione presenza
+- Operazioni sulle valutazioni:
+  - Ottenimento lista valutazioni
+  - Ottenimento valutazione per ID
+  - Ottenimento valutazioni per iscrizione
+  - Creazione valutazione
+- Operazioni sui pagamenti:
+  - Ottenimento lista pagamenti
+  - Ottenimento pagamento per ID
+  - Ottenimento pagamenti per iscrizione
+  - Creazione pagamento
+  - Aggiornamento pagamento
+- Operazioni sulle aule:
+  - Ottenimento lista aule
+  - Ottenimento aula per ID
+  - Creazione aula
+  - Aggiornamento aula
+  - Eliminazione aula
+- Operazioni sui materiali didattici:
+  - Ottenimento lista materiali didattici
+  - Ottenimento materiale didattico per ID
+  - Ottenimento materiali didattici per lezione
+  - Creazione materiale didattico
+- Operazioni di export:
+  - Esporta studenti in CSV
+  - Esporta docenti in CSV
+  - Esporta iscrizioni in CSV
+  - Esporta corsi in Excel
+  - Genera profilo studente in PDF
 
-⏳ Test da completare:
-- Operazioni sui docenti
-- Operazioni sulle iscrizioni 
+
+- Operazioni sui pagamenti
+
+
+
+
