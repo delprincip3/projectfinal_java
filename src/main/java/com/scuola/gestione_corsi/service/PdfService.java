@@ -19,10 +19,12 @@ import java.util.stream.Stream;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PdfService {
 
     private final StudenteRepository studenteRepository;
     private final ValutazioneRepository valutazioneRepository;
+    private final IscrizioneRepository iscrizioneRepository;
     private static final Logger log = LoggerFactory.getLogger(PdfService.class);
 
     public byte[] generateProfiloStudente(Long studenteId) {
@@ -90,20 +92,36 @@ public class PdfService {
                         corsiTable.addCell(header);
                     });
 
-            studente.getIscrizioni().forEach(iscrizione -> {
+            // Ottieni tutte le iscrizioni per questo studente (ricaricate dal repository per evitare problemi di lazy loading)
+            List<Iscrizione> iscrizioni = iscrizioneRepository.findByStudente_Id(studenteId);
+            log.debug("Trovate {} iscrizioni per lo studente", iscrizioni.size());
+            
+            for (Iscrizione iscrizione : iscrizioni) {
                 corsiTable.addCell(iscrizione.getCorso().getNome());
-                corsiTable.addCell(iscrizione.getDataIscrizione().toString());
+                corsiTable.addCell(iscrizione.getDataIscrizione().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                 corsiTable.addCell(iscrizione.getStato().toString());
                 
-                // Carica le valutazioni per questa iscrizione
+                // Carica esplicitamente le valutazioni per questa iscrizione
                 List<Valutazione> valutazioni = valutazioneRepository.findByIscrizione_Id(iscrizione.getId());
-                double mediaVoti = valutazioni.stream()
-                        .mapToInt(Valutazione::getVoto)
-                        .average()
-                        .orElse(0.0);
-                corsiTable.addCell(String.format("%.2f", mediaVoti));
-            });
+                log.debug("Trovate {} valutazioni per l'iscrizione {}", valutazioni.size(), iscrizione.getId());
+                
+                if (valutazioni.isEmpty()) {
+                    corsiTable.addCell("N/A");
+                } else {
+                    double mediaVoti = valutazioni.stream()
+                            .mapToInt(Valutazione::getVoto)
+                            .average()
+                            .orElse(0.0);
+                    corsiTable.addCell(String.format("%.2f", mediaVoti));
+                }
+            }
             document.add(corsiTable);
+            
+            // Se non ci sono valutazioni, aggiungiamo un messaggio
+            if (iscrizioni.isEmpty()) {
+                Font noteFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Font.ITALIC);
+                document.add(new Paragraph("Lo studente non ha iscrizioni attive.", noteFont));
+            }
 
             document.close();
             return out.toByteArray();
