@@ -11,7 +11,9 @@ import java.util.List;
  * Contiene le informazioni sull'iscrizione e le relative valutazioni.
  */
 @Entity
-@Table(name = "iscrizioni")
+@Table(name = "iscrizioni", uniqueConstraints = {
+    @UniqueConstraint(columnNames = {"studente_id", "corso_id"})
+})
 @Data
 @Builder
 @NoArgsConstructor

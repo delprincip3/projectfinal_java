@@ -189,7 +189,7 @@ public class DataInitializer {
                         .build();
                 iscrizioneRepository.save(iscrizione1);
             } else {
-                iscrizione1 = iscrizioneRepository.findByStudenteAndCorso(studente1, corsoJava).orElseThrow();
+                iscrizione1 = iscrizioneRepository.findFirstByStudenteAndCorso(studente1, corsoJava).orElseThrow();
             }
 
             // Creazione valutazioni

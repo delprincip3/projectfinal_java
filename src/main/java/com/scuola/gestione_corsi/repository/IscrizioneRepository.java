@@ -5,6 +5,8 @@ import com.scuola.gestione_corsi.model.StatoIscrizione;
 import com.scuola.gestione_corsi.model.Studente;
 import com.scuola.gestione_corsi.model.Corso;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -46,6 +48,13 @@ public interface IscrizioneRepository extends JpaRepository<Iscrizione, Long> {
      */
     List<Iscrizione> findByStudente_IdAndCorso_Id(Long studenteId, Long corsoId);
 
+    @Query("SELECT i FROM Iscrizione i WHERE i.studente = :studente AND i.corso = :corso ORDER BY i.id DESC")
+    List<Iscrizione> findByStudenteAndCorso(@Param("studente") Studente studente, @Param("corso") Corso corso);
+
+    default Optional<Iscrizione> findFirstByStudenteAndCorso(Studente studente, Corso corso) {
+        List<Iscrizione> iscrizioni = findByStudenteAndCorso(studente, corso);
+        return iscrizioni.isEmpty() ? Optional.empty() : Optional.of(iscrizioni.get(0));
+    }
+
     boolean existsByStudenteAndCorso(Studente studente, Corso corso);
-    Optional<Iscrizione> findByStudenteAndCorso(Studente studente, Corso corso);
 } 
