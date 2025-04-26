@@ -16,11 +16,7 @@ Il Sistema di Gestione Corsi è un'applicazione web che permette la gestione com
   - Apache POI per la gestione di file Excel
   - OpenCSV per la gestione di file CSV
 
-- **Frontend**:
-  - React.js
-  - Material-UI
-  - Axios per le chiamate API
-  - React Router per la navigazione
+
 
 ## Architettura
 L'applicazione segue un'architettura RESTful con:
