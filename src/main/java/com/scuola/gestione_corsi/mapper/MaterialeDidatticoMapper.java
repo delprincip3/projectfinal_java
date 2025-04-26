@@ -2,6 +2,7 @@ package com.scuola.gestione_corsi.mapper;
 
 import com.scuola.gestione_corsi.dto.MaterialeDidatticoDTO;
 import com.scuola.gestione_corsi.model.MaterialeDidattico;
+import com.scuola.gestione_corsi.model.Lezione;
 import org.springframework.stereotype.Component;
 
 /**
@@ -46,6 +47,13 @@ public class MaterialeDidatticoMapper {
         materiale.setTitolo(dto.getTitolo());
         materiale.setTipo(dto.getTipo());
         materiale.setUrl(dto.getUrl());
+        
+        // Imposta la relazione con la lezione
+        if (dto.getLezioneId() != null) {
+            Lezione lezione = new Lezione();
+            lezione.setId(dto.getLezioneId());
+            materiale.setLezione(lezione);
+        }
         
         return materiale;
     }
