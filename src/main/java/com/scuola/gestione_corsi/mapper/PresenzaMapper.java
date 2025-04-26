@@ -28,6 +28,7 @@ public class PresenzaMapper {
         dto.setDataPresenza(presenza.getDataPresenza());
         dto.setPresente(presenza.getPresente());
         dto.setIscrizioneId(presenza.getIscrizione().getId());
+        dto.setLezioneId(presenza.getLezione().getId());
         
         return dto;
     }

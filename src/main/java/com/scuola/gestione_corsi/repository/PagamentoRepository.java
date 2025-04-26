@@ -46,5 +46,11 @@ public interface PagamentoRepository extends JpaRepository<Pagamento, Long> {
     List<Pagamento> findByImportoGreaterThan(Double importo);
 
     boolean existsByIscrizione(Iscrizione iscrizione);
-    Optional<Pagamento> findByIscrizione(Iscrizione iscrizione);
+    
+    /**
+     * Trova il pagamento più recente per un'iscrizione.
+     * @param iscrizione L'iscrizione
+     * @return Il pagamento più recente, se presente
+     */
+    Optional<Pagamento> findFirstByIscrizioneOrderByDataPagamentoDesc(Iscrizione iscrizione);
 } 

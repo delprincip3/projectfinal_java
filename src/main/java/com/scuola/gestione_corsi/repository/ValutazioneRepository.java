@@ -23,6 +23,13 @@ public interface ValutazioneRepository extends JpaRepository<Valutazione, Long> 
     List<Valutazione> findByIscrizione_Id(Long iscrizioneId);
     
     /**
+     * Trova la valutazione più recente di un'iscrizione.
+     * @param iscrizione L'iscrizione
+     * @return La valutazione più recente, se esiste
+     */
+    Optional<Valutazione> findFirstByIscrizioneOrderByDataValutazioneDesc(Iscrizione iscrizione);
+    
+    /**
      * Trova le valutazioni con voto superiore a un valore specifico.
      * @param voto Il voto minimo
      * @return Lista di valutazioni con voto superiore
@@ -37,5 +44,4 @@ public interface ValutazioneRepository extends JpaRepository<Valutazione, Long> 
     List<Valutazione> findByVotoLessThan(Integer voto);
 
     boolean existsByIscrizione(Iscrizione iscrizione);
-    Optional<Valutazione> findByIscrizione(Iscrizione iscrizione);
 } 

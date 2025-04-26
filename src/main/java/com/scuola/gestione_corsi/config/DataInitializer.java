@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Comparator;
 
 @Configuration
 @RequiredArgsConstructor
@@ -178,7 +179,7 @@ public class DataInitializer {
             }
 
             // Creazione iscrizioni
-            Iscrizione iscrizione1 = null;
+            final Iscrizione iscrizione1;
             if (!iscrizioneRepository.existsByStudenteAndCorso(studente1, corsoJava)) {
                 iscrizione1 = Iscrizione.builder()
                         .dataIscrizione(LocalDateTime.now())
@@ -203,7 +204,16 @@ public class DataInitializer {
                         .build();
                 valutazioneRepository.save(valutazione1);
             } else {
-                valutazione1 = valutazioneRepository.findByIscrizione(iscrizione1).orElseThrow();
+                valutazione1 = valutazioneRepository.findFirstByIscrizioneOrderByDataValutazioneDesc(iscrizione1)
+                        .orElseGet(() -> {
+                            Valutazione v = Valutazione.builder()
+                                    .voto(28)
+                                    .commento("Ottimo studente")
+                                    .dataValutazione(LocalDate.now())
+                                    .iscrizione(iscrizione1)
+                                    .build();
+                            return valutazioneRepository.save(v);
+                        });
             }
 
             // Creazione pagamenti
@@ -217,7 +227,8 @@ public class DataInitializer {
                         .build();
                 pagamentoRepository.save(pagamento1);
             } else {
-                pagamento1 = pagamentoRepository.findByIscrizione(iscrizione1).orElseThrow();
+                pagamento1 = pagamentoRepository.findFirstByIscrizioneOrderByDataPagamentoDesc(iscrizione1)
+                        .orElseThrow();
             }
 
             // Creazione presenze
