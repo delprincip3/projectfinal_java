@@ -38,6 +38,9 @@ L'applicazione segue un'architettura RESTful con:
 - Password crittografate con BCrypt
 - Validazione dei dati in input
 - Protezione contro attacchi CSRF
+- Timeout token JWT: 24 ore
+- Gestione sessioni con refresh token
+- Rate limiting per prevenire attacchi brute force
 
 ## Funzionalità principali
 1. **Gestione Corsi**
@@ -53,7 +56,7 @@ L'applicazione segue un'architettura RESTful con:
 
 3. **Gestione Iscrizioni**
    - Registrazione studenti ai corsi
-   - Gestione stati iscrizione
+   - Gestione stati iscrizione (ATTIVA, SOSPESA, ANNULLATA, COMPLETATA)
    - Monitoraggio pagamenti
 
 4. **Gestione Lezioni**
@@ -72,21 +75,40 @@ L'applicazione segue un'architettura RESTful con:
    - Export Excel dei corsi
 
 2. **Reportistica**
-   - Statistiche presenze
-   - Report valutazioni
-   - Monitoraggio pagamenti
+   - Statistiche presenze per corso e studente
+   - Report valutazioni con medie e distribuzione
+   - Monitoraggio pagamenti e stato finanziario
+   - Query predefinite per analisi dati
+   - Dashboard personalizzate per ruolo
 
 ## Testing
-- Test unitari con JUnit
-- Test di integrazione
+- Test unitari con JUnit (copertura > 80%)
+- Test di integrazione con TestContainers
 - Test delle API con Postman
+- Test di sicurezza con OWASP ZAP
 - Validazione dei dati
 - Gestione errori
+- Test di performance con JMeter
+
+## Requisiti di Sistema
+- Java 17 o superiore
+- PostgreSQL 14 o superiore
+- 4GB RAM minimo
+- 2GB spazio su disco
+- Connessione internet per dipendenze
 
 ## Avvio del progetto
 1. Clonare il repository
-2. Configurare il database PostgreSQL
-3. Modificare le configurazioni in `application.properties`
+2. Configurare il database PostgreSQL:
+   - Creare database 'gestione_corsi'
+   - Eseguire script SQL in ordine:
+     - 01_create_database.sql
+     - 02_create_tables.sql
+     - 03_insert_example_data.sql
+3. Modificare le configurazioni in `application.properties`:
+   - Configurare URL database
+   - Impostare credenziali
+   - Configurare JWT secret
 4. Eseguire il comando `mvn spring-boot:run`
 5. Accedere all'applicazione su `http://localhost:8080`
 
@@ -94,7 +116,10 @@ L'applicazione segue un'architettura RESTful con:
 Il sistema include un dataset iniziale con:
 - Categorie di corsi predefinite
 - Docenti di esempio
+- Studenti di esempio
 - Aule preconfigurate
+- Lezioni di esempio
+- Iscrizioni di esempio
 - Ruoli utente standard
 
 ## Design Pattern utilizzati
@@ -104,6 +129,8 @@ Il sistema include un dataset iniziale con:
 - Mapper Pattern
 - Factory Pattern
 - Strategy Pattern per l'export
+- Builder Pattern per oggetti complessi
+- Observer Pattern per eventi di sistema
 
 ## Note finali
 - Il sistema è completamente documentato con JavaDoc
@@ -111,3 +138,6 @@ Il sistema include un dataset iniziale con:
 - Il codice segue le best practices di Spring Boot
 - La sicurezza è implementata seguendo gli standard OWASP
 - Il sistema è scalabile e mantenibile
+- Documentazione API disponibile su Swagger UI
+- Logging completo con SLF4J
+- Monitoraggio con Spring Boot Actuator
