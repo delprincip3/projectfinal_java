@@ -2,6 +2,7 @@ package com.scuola.gestione_corsi.mapper;
 
 import com.scuola.gestione_corsi.dto.PagamentoDTO;
 import com.scuola.gestione_corsi.model.Pagamento;
+import com.scuola.gestione_corsi.model.Iscrizione;
 import org.springframework.stereotype.Component;
 
 /**
@@ -46,6 +47,13 @@ public class PagamentoMapper {
         pagamento.setImporto(dto.getImporto());
         pagamento.setDataPagamento(dto.getDataPagamento());
         pagamento.setMetodoPagamento(dto.getMetodoPagamento());
+        
+        // Imposta la relazione con l'iscrizione
+        if (dto.getIscrizioneId() != null) {
+            Iscrizione iscrizione = new Iscrizione();
+            iscrizione.setId(dto.getIscrizioneId());
+            pagamento.setIscrizione(iscrizione);
+        }
         
         return pagamento;
     }
