@@ -2,6 +2,8 @@ package com.scuola.gestione_corsi.mapper;
 
 import com.scuola.gestione_corsi.dto.PresenzaDTO;
 import com.scuola.gestione_corsi.model.Presenza;
+import com.scuola.gestione_corsi.model.Iscrizione;
+import com.scuola.gestione_corsi.model.Lezione;
 import org.springframework.stereotype.Component;
 
 /**
@@ -44,6 +46,20 @@ public class PresenzaMapper {
         presenza.setId(dto.getId());
         presenza.setDataPresenza(dto.getDataPresenza());
         presenza.setPresente(dto.getPresente());
+        
+        // Imposta la relazione con l'iscrizione
+        if (dto.getIscrizioneId() != null) {
+            Iscrizione iscrizione = new Iscrizione();
+            iscrizione.setId(dto.getIscrizioneId());
+            presenza.setIscrizione(iscrizione);
+        }
+        
+        // Imposta la relazione con la lezione
+        if (dto.getLezioneId() != null) {
+            Lezione lezione = new Lezione();
+            lezione.setId(dto.getLezioneId());
+            presenza.setLezione(lezione);
+        }
         
         return presenza;
     }

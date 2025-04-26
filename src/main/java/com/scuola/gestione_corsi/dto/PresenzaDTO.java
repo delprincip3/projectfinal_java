@@ -18,4 +18,5 @@ public class PresenzaDTO {
     private LocalDate dataPresenza;
     private Boolean presente;
     private Long iscrizioneId;
+    private Long lezioneId;
 } 
