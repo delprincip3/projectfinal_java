@@ -5,7 +5,7 @@ Il Sistema di Gestione Corsi è un'applicazione web che permette la gestione com
 
 ## Tecnologie
 - **Backend**: 
-  - Java 17
+  - Java 21
   - Spring Boot 3.x
   - Spring Security con JWT
   - Spring Data JPA
@@ -123,10 +123,9 @@ Il sistema include un dataset iniziale con:
 - Service Layer Pattern
 - DTO Pattern
 - Mapper Pattern
-- Factory Pattern
 - Strategy Pattern per l'export
 - Builder Pattern per oggetti complessi
-- Observer Pattern per eventi di sistema
+
 
 ## Note finali
 - Il sistema è completamente documentato con JavaDoc
